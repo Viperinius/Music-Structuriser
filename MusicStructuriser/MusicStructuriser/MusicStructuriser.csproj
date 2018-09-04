@@ -51,6 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMetaData.cs" />
+    <Compile Include="CSettings.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
