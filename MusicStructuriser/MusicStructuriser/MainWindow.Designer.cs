@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.tabBox = new System.Windows.Forms.TabControl();
             this.pageStructure = new System.Windows.Forms.TabPage();
             this.chkName = new System.Windows.Forms.CheckBox();
             this.chkAlbum = new System.Windows.Forms.CheckBox();
             this.chkArtist = new System.Windows.Forms.CheckBox();
             this.pageMeta = new System.Windows.Forms.TabPage();
+            this.picOverlay = new System.Windows.Forms.PictureBox();
             this.picCover = new System.Windows.Forms.PictureBox();
             this.txtDiscNum = new System.Windows.Forms.TextBox();
             this.txtComposers = new System.Windows.Forms.TextBox();
@@ -58,9 +60,11 @@
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.grpTracklist = new System.Windows.Forms.GroupBox();
             this.grpSettings = new System.Windows.Forms.GroupBox();
+            this.openPicDialog = new System.Windows.Forms.OpenFileDialog();
             this.tabBox.SuspendLayout();
             this.pageStructure.SuspendLayout();
             this.pageMeta.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picOverlay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).BeginInit();
             this.grpTracklist.SuspendLayout();
             this.grpSettings.SuspendLayout();
@@ -125,6 +129,7 @@
             // 
             // pageMeta
             // 
+            this.pageMeta.Controls.Add(this.picOverlay);
             this.pageMeta.Controls.Add(this.picCover);
             this.pageMeta.Controls.Add(this.txtDiscNum);
             this.pageMeta.Controls.Add(this.txtComposers);
@@ -153,13 +158,31 @@
             this.pageMeta.Text = "Meta Data";
             this.pageMeta.UseVisualStyleBackColor = true;
             // 
+            // picOverlay
+            // 
+            this.picOverlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.picOverlay.Image = ((System.Drawing.Image)(resources.GetObject("picOverlay.Image")));
+            this.picOverlay.InitialImage = ((System.Drawing.Image)(resources.GetObject("picOverlay.InitialImage")));
+            this.picOverlay.Location = new System.Drawing.Point(655, 290);
+            this.picOverlay.Name = "picOverlay";
+            this.picOverlay.Size = new System.Drawing.Size(210, 210);
+            this.picOverlay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picOverlay.TabIndex = 22;
+            this.picOverlay.TabStop = false;
+            this.picOverlay.Visible = false;
+            // 
             // picCover
             // 
+            this.picCover.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picCover.Location = new System.Drawing.Point(655, 74);
             this.picCover.Name = "picCover";
-            this.picCover.Size = new System.Drawing.Size(204, 210);
+            this.picCover.Size = new System.Drawing.Size(210, 210);
+            this.picCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picCover.TabIndex = 21;
             this.picCover.TabStop = false;
+            this.picCover.Click += new System.EventHandler(this.PicCover_Click);
+            this.picCover.MouseEnter += new System.EventHandler(this.PicCover_MouseEnter);
+            this.picCover.MouseLeave += new System.EventHandler(this.PicCover_MouseLeave);
             // 
             // txtDiscNum
             // 
@@ -354,6 +377,10 @@
             this.grpSettings.TabStop = false;
             this.grpSettings.Text = "Settings";
             // 
+            // openPicDialog
+            // 
+            this.openPicDialog.FileName = "openFileDialog1";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -368,6 +395,7 @@
             this.pageStructure.PerformLayout();
             this.pageMeta.ResumeLayout(false);
             this.pageMeta.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picOverlay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCover)).EndInit();
             this.grpTracklist.ResumeLayout(false);
             this.grpSettings.ResumeLayout(false);
@@ -406,5 +434,7 @@
         private System.Windows.Forms.CheckBox chkName;
         private System.Windows.Forms.CheckBox chkAlbum;
         private System.Windows.Forms.CheckBox chkArtist;
+        private System.Windows.Forms.OpenFileDialog openPicDialog;
+        private System.Windows.Forms.PictureBox picOverlay;
     }
 }

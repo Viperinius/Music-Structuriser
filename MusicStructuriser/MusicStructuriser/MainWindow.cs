@@ -101,6 +101,29 @@ namespace MusicStructuriser
 
         }
 
+        private void PicCover_Click(object sender, EventArgs e)
+        {
+            openPicDialog.Title = "Open image";
+            openPicDialog.Filter = "Image files (*.jpg,*.jpeg,*.jpe,*.jfif,*.png)|*.jpg;*.jpeg;*.jpe;*.jfif;*.png";
+            if (openPicDialog.ShowDialog() == DialogResult.OK)
+            {
+                picCover.Image = new Bitmap(openPicDialog.FileName);
+            }
+        }
+
+        private void PicCover_MouseEnter(object sender, EventArgs e)
+        {
+            picCover.BackgroundImageLayout = ImageLayout.Zoom;
+            picCover.BackgroundImage = picCover.Image;
+            picCover.Image = picOverlay.Image;
+        }
+
+        private void PicCover_MouseLeave(object sender, EventArgs e)
+        {
+            picCover.Image = picCover.BackgroundImage;
+            picCover.BackgroundImage = null;
+        }
+
         public string CombineArray(string[] sArray)
         {
             string sTmpResult = "";
@@ -151,13 +174,29 @@ namespace MusicStructuriser
             {
                 lPaths.Add(sFile.Replace(settings.sRootSourceDir + Path.DirectorySeparatorChar, ""));
             }
-            
-            treeView1.Nodes.Add(PathsToRootNode(lPaths, settings.sRootSourceDir, Path.DirectorySeparatorChar));
+
+            TreeNode newNode = PathsToRootNode(lPaths, settings.sRootSourceDir, Path.DirectorySeparatorChar);
+            if (newNode != null)
+            {
+                treeView1.Nodes.Add(newNode);
+            }
         }
 
         public TreeNode PathsToRootNode(List<string> lPaths, string sRootPath, char separator)
         {
             var rootSplit = sRootPath.Split(separator);
+
+            try
+            {
+                string sTopNodeName = treeView1.TopNode.Text;
+                if (treeView1.TopNode.Text == rootSplit[rootSplit.Length - 1])
+                {
+                    return null;
+                }
+            }
+            catch (NullReferenceException)
+            {
+            }
 
             TreeNode rootNode = new TreeNode(rootSplit[rootSplit.Length - 1]);
             foreach (string file in lPaths.Where(x => !string.IsNullOrEmpty(x.Trim())))
@@ -346,6 +385,37 @@ namespace MusicStructuriser
             System.IO.File.Replace(sPath + sOldName, sPath + sNewName, "");       //check if correct
         }
 
-        
+        public string GetRenamedFile(string sPathEndingWithSeparator, string sOldName, ref CMetaData metaTags)
+        {
+            string sTmpPath = "";
+            if (settings.bChangeName)
+            {
+                sTmpPath = sPathEndingWithSeparator;
+                if (settings.bChangeToTrack)
+                {
+                    sTmpPath += (settings.bChangeToTitle || settings.bChangeToArtist) ? metaTags.sTrack + " - " : metaTags.sTrack;
+                }
+                if (settings.bChangeToArtist)
+                {
+                    try
+                    {
+                        sTmpPath += settings.bChangeToTitle ? metaTags.sArtists[0] + " - " : metaTags.sArtists[0];
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show(String.Format("Error renaming file {0}, no artist meta data?", sOldName), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                if (settings.bChangeToTitle)
+                {
+                    sTmpPath += metaTags.sTitle;
+                }
+            }
+            else
+            {
+                sTmpPath = sPathEndingWithSeparator + sOldName;
+            }
+            return sTmpPath;
+        }
     }
 }
