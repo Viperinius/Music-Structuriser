@@ -1,0 +1,79 @@
+﻿<Controls:MetroWindow x:Class="WPF_MusicStructuriser.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_MusicStructuriser"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Dialog:DialogParticipation.Register="{Binding}"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Tracklist"/>
+        <TreeView Grid.Row="2" Grid.Column="1" Name="treeView" ItemsSource="{Binding}" SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeView.Resources>
+                
+                <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" ItemsSource="{Binding Items}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Visibility="Visible" Width="18" Height="18" Source="{Binding Source={x:Static iconPacks:PackIconOcticonsKind.FileDirectory}, Converter={local:PackIconOcticonsImageSourceConverter}, ConverterParameter={StaticResource TextBrush}}"/>
+                        <TextBlock Text="  "/>
+                        <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Path}"/>
+                        <TextBlock Text="  "/>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:FileItem}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Visibility="Visible" Width="18" Height="18" Source="{Binding Source={x:Static iconPacks:PackIconMaterialKind.FileMusic}, Converter={local:PackIconMaterialImageSourceConverter}, ConverterParameter={StaticResource TextBrush}}"/>
+                        <TextBlock Text="  "/>
+                        <TextBlock Text="{Binding Path=Title}" ToolTip="{Binding Path=Path}"/>
+                        <TextBlock Text="  "/>
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <Border Grid.Row="2" Grid.Column="1" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
+
+        <TextBlock Grid.Row="1" Grid.Column="3" Text="Settings"/>
+        <Controls:MetroAnimatedSingleRowTabControl Grid.Row="2" Grid.Column="3">
+            <Controls:MetroTabItem Name="tabStruct" Header="Structure"/>
+            <Controls:MetroTabItem Name="tabMeta" Header="Meta Data"/>
+            <Controls:MetroTabItem Name="tabPath" Header="Folder Paths"/>
+        </Controls:MetroAnimatedSingleRowTabControl>
+        <Border Grid.Row="2" Grid.Column="3" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
+    </Grid>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Name="BtnStyle" Click="BtnStyle_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle  Width="20"
+                                Height="20"
+                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Visual="{StaticResource appbar_draw_brush}" Stretch="Fill" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Change style..." />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+</Controls:MetroWindow>
