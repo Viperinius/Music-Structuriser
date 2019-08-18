@@ -18,6 +18,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.IconPacks;
 using TagLib;
 using System.Globalization;
+using System.Reflection;
 
 namespace WPF_MusicStructuriser
 {
@@ -31,9 +32,11 @@ namespace WPF_MusicStructuriser
         List<string> lAudioDataEnding = new List<string>();
 
         CSettings settings = new CSettings();
+        COrganiser organiser;
 
         private MetaDataPage metaDataPage;
         private StructurePage structurePage;
+        private FolderPage folderPage;
         private object dummyNode = null;
 
         public MainWindow()
@@ -50,34 +53,47 @@ namespace WPF_MusicStructuriser
             lAudioDataEnding.Add(".m4b");
             lAudioDataEnding.Add(".ogg");
 
-            metaDataPage = new MetaDataPage();
-            structurePage = new StructurePage();
+            metaDataPage = new MetaDataPage(this);
+            structurePage = new StructurePage(settings, this);
+            folderPage = new FolderPage(settings, this);
 
             tabStruct.Content = structurePage;
             tabMeta.Content = metaDataPage;
+            tabPath.Content = folderPage;
 
+            organiser = new COrganiser(settings);
 
+            settings.sRootSourceDir = settings.GetRootSourceDir();
+            settings.sRootDestDir = settings.GetRootDestDir();
 
             //testing
-            settings.sRootSourceDir = @"X:\Alexander\Videos\Rock CD";
+            //settings.SetRootSourceDir(@"X:\Alexander\Videos\Rock CD");
+            //settings.SetRootDestDir(@"X:\Alexander\Videos\RockCD");
 
             PopulateTreeView();
             LoadAllFilesTags();
 
+
+            //organiser.MoveToFolders(lFiles);
         }
 
         public void LoadAllFilesTags()
         {
             foreach (FileInfo file in lFiles)
             {
-                lFileTags.Add(metaDataPage.LoadFileTags(file.FullName));
+                lFileTags.Add(organiser.LoadFileTags(file.FullName));
             }
         }
 
-        private void PopulateTreeView()
+        public void PopulateTreeView()
         {
+            if (settings.sRootSourceDir == null || settings.sRootSourceDir == "")
+            {
+                return;
+            }
             var items = GetTreeItems(settings.sRootSourceDir);
             treeView.DataContext = items;
+
         }
 
 
@@ -100,10 +116,18 @@ namespace WPF_MusicStructuriser
 
             foreach (FileInfo file in dirInfo.GetFiles().Where(n => lAudioDataEnding.Contains(System.IO.Path.GetExtension(n.FullName), StringComparer.OrdinalIgnoreCase)))
             {
+                TagLib.File tagFile = TagLib.File.Create(file.FullName);
+                bool hasTitleTag = true;
+                if (tagFile.Tag.Title is null)
+                {
+                    hasTitleTag = false;
+                }
+
                 var item = new FileItem()
                 {
                     Title = file.Name,
-                    Path = file.FullName
+                    Path = file.FullName,
+                    HasTags = hasTitleTag
                 };
 
                 items.Add(item);
@@ -147,8 +171,35 @@ namespace WPF_MusicStructuriser
         {
             if (treeView.SelectedItem is FileItem file)
             {
-                CMetaData metaData = metaDataPage.LoadFileTags(file.Path);
+                CMetaData metaData = organiser.LoadFileTags(file.Path);
+                metaDataPage.ShowTags(metaData);
             }
+
+        }
+
+        public void MoveFiles()
+        {
+            organiser.MoveToFolders(lFiles);
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (object item in treeView.Items)
+            {
+                TreeViewItem treeItem = treeView.ItemContainerGenerator.ContainerFromItem(item) as TreeViewItem;
+                if (treeItem.DataContext.GetType() == typeof(FileItem))
+                {
+                    FileItem fileItem = (FileItem)treeItem.DataContext;
+                    if (!fileItem.HasTags)
+                    {
+                        treeItem.Background = Brushes.Red;
+                    }
+                }
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
@@ -159,6 +210,8 @@ namespace WPF_MusicStructuriser
         public string Title { get; set; }
 
         public string Path { get; set; }
+
+        public bool HasTags { get; set; }
     }
 
     public class FileItem : TreeItem

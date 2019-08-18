@@ -18,6 +18,7 @@ namespace WPF_MusicStructuriser
         public string[] sComposers;
         public BitmapImage image;
         public string[] sGenres;
+        public uint uiDiscNo;
 
         public CMetaData()
         {

@@ -2,7 +2,7 @@
 Tool to structure music depending on name and meta tags
 
 ## Status
-**Currently not functional**
+**Currently only basic functionality**
 
 ## Used libraries
 + [taglib-sharp](https://github.com/mono/taglib-sharp)

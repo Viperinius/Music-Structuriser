@@ -9,7 +9,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         Dialog:DialogParticipation.Register="{Binding}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="MetroWindow_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -28,7 +28,6 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Tracklist"/>
         <TreeView Grid.Row="2" Grid.Column="1" Name="treeView" ItemsSource="{Binding}" SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeView.Resources>
-                
                 <HierarchicalDataTemplate DataType="{x:Type local:DirectoryItem}" ItemsSource="{Binding Items}">
                     <StackPanel Orientation="Horizontal">
                         <Image Visibility="Visible" Width="18" Height="18" Source="{Binding Source={x:Static iconPacks:PackIconOcticonsKind.FileDirectory}, Converter={local:PackIconOcticonsImageSourceConverter}, ConverterParameter={StaticResource TextBrush}}"/>
@@ -49,11 +48,13 @@
         </TreeView>
         <Border Grid.Row="2" Grid.Column="1" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
 
-        <TextBlock Grid.Row="1" Grid.Column="3" Text="Settings"/>
+        <TextBlock Grid.Row="1" Grid.Column="3">
+            <Run Text="Settings"/>
+        </TextBlock>
         <Controls:MetroAnimatedSingleRowTabControl Grid.Row="2" Grid.Column="3">
-            <Controls:MetroTabItem Name="tabStruct" Header="Structure"/>
-            <Controls:MetroTabItem Name="tabMeta" Header="Meta Data"/>
             <Controls:MetroTabItem Name="tabPath" Header="Folder Paths"/>
+            <Controls:MetroTabItem Name="tabStruct" Header="Structure"/>
+            <Controls:MetroTabItem Name="tabMeta" Header="Meta Data"/>            
         </Controls:MetroAnimatedSingleRowTabControl>
         <Border Grid.Row="2" Grid.Column="3" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
     </Grid>

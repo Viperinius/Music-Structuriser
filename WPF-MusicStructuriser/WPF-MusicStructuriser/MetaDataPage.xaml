@@ -9,23 +9,25 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
@@ -45,6 +47,7 @@
         <TextBlock Grid.Row="13" Grid.Column="1" Text="Album Artists:"/>
         <TextBlock Grid.Row="15" Grid.Column="1" Text="Composers:"/>
         <TextBlock Grid.Row="17" Grid.Column="1" Text="Disc No:"/>
+        <TextBlock Grid.Row="19" Grid.Column="1" Text=""/>
         <TextBox Grid.Row="1" Grid.Column="2" Name="txtTitle"/>
         <TextBox Grid.Row="3" Grid.Column="2" Name="txtArtists"/>
         <TextBox Grid.Row="5" Grid.Column="2" Name="txtAlbum"/>
@@ -54,6 +57,7 @@
         <TextBox Grid.Row="13" Grid.Column="2" Name="txtAlbumArtists"/>
         <TextBox Grid.Row="15" Grid.Column="2" Name="txtComposers"/>
         <TextBox Grid.Row="17" Grid.Column="2" Name="txtDiscNum"/>
+        <Button Grid.Row="19" Grid.Column="2" Name="btnSave" Content="Save" Click="BtnSave_Click"/>
         <TextBlock Grid.Row="1" Grid.Column="3" Text="Cover:" Margin="50,0,0,0"/>
         <Image Name="picCover" Grid.Row="3" Grid.Column="3" Grid.RowSpan="10" Margin="50,0,0,0" Height="150" Width="150" HorizontalAlignment="Left"/>
     </Grid>

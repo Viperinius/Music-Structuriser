@@ -21,48 +21,13 @@ namespace WPF_MusicStructuriser
     /// </summary>
     public partial class MetaDataPage : UserControl
     {
-        public MetaDataPage()
+        MainWindow mainWindow;
+
+        public MetaDataPage(MainWindow _mainWindow)
         {
             InitializeComponent();
-        }
-
-        public CMetaData LoadFileTags(string sFile)
-        {
-            CMetaData metaTags = new CMetaData();
-            using (TagLib.File tagFile = TagLib.File.Create(sFile))
-            {
-                GetTags(tagFile, ref metaTags);
-                ShowTags(metaTags);
-            }
-            return metaTags;
-        }
-
-        public void GetTags(TagLib.File tagFile, ref CMetaData metaTags)
-        {
-            metaTags.sTitle = tagFile.Tag.Title;
-            metaTags.sAlbum = tagFile.Tag.Album;
-            metaTags.sTrack = tagFile.Tag.Track.ToString();
-            metaTags.sYear = tagFile.Tag.Year.ToString();
-            metaTags.sArtists = tagFile.Tag.Performers;
-            metaTags.sAlbumArtists = tagFile.Tag.AlbumArtists;
-            metaTags.sComposers = tagFile.Tag.Composers;
-
-            try
-            {
-                MemoryStream ms = new MemoryStream(tagFile.Tag.Pictures[0].Data.Data);
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = ms;
-                bitmap.EndInit();
-
-                metaTags.image = bitmap;
-            }
-            catch (IndexOutOfRangeException)
-            {
-            }
-
-            metaTags.sGenres = tagFile.Tag.Genres;
-        }
+            mainWindow = _mainWindow;
+        }         
 
         public void ShowTags(CMetaData metaTags)
         {
@@ -77,7 +42,7 @@ namespace WPF_MusicStructuriser
             txtGenre.Text = CombineArray(metaTags.sGenres);
         }
 
-        public string CombineArray(string[] sArray)
+        private string CombineArray(string[] sArray)
         {
             string sTmpResult = "";
             if (sArray.Length > 1)
@@ -93,6 +58,11 @@ namespace WPF_MusicStructuriser
                 sTmpResult = sArray[0];
             }
             return sTmpResult;
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

@@ -72,6 +72,7 @@ namespace WPF_MusicStructuriser
         public void SetRootSourceDir(string sPath)
         {
             SetAppSetting("RootSourceDir", sPath);
+            sRootSourceDir = sPath;
         }
 
         public string GetRootSourceDir()
@@ -82,6 +83,7 @@ namespace WPF_MusicStructuriser
         public void SetRootDestDir(string sPath)
         {
             SetAppSetting("RootDestDir", sPath);
+            sRootDestDir = sPath;
         }
 
         public string GetRootDestDir()
